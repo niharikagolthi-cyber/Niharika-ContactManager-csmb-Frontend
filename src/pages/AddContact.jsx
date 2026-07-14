@@ -103,7 +103,7 @@ async function loadContact() {
         setFormdata(response.data);
         if (response.data.profileImage) {
             setProfileImage(
-                `https://contactmanager-g-niharika-csm-b-1.onrender.com${response.data.profileImage}`
+                `https://niharika-contactmanager-csmb-backend.onrender.com${response.data.profileImage}`
             );
             }
     } catch (error) {
