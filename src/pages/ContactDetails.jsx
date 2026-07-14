@@ -21,7 +21,15 @@ function ContactDetails() {
         <div className="details-page">
             <div className="details-card">
                 <div className="avatar">
-                    {contact.name?.charAt(0).toUpperCase()}
+                    {contact.profileImage ? (
+                        <img
+                            src={`https://contactmanagerbackend-jism.onrender.com${contact.profileImage}`}
+                            alt={contact.name}
+                            className="avatar-image"
+                        />
+                    ) : (
+                        contact.name?.charAt(0).toUpperCase()
+                    )}
                 </div>
                 <h2>{contact.name}</h2>
                 <div className="info-box">

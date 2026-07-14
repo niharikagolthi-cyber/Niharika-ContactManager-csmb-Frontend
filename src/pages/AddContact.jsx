@@ -24,6 +24,7 @@ function AddContact() {
 })
     const fileInputRef = useRef(null)
     const [profileimage, setProfileImage]=useState(null)
+    const [imageFile, setImageFile] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate();
     useEffect(() => {
@@ -64,17 +65,29 @@ async function handleSubmit(e) {
         alert("Please enter at least one name field.");
         return;
     }
+    const data = new FormData();
+    Object.keys(formdata).forEach((key) => {
+        data.append(key, formdata[key]);
+    });
+    data.set("name", fullName);
+    if (imageFile) {
+        data.append("profileImage", imageFile);
+    }
     try {
         if (id) {
-            await API.put(`/contacts/${id}`, {
-                ...formdata,
-                name: fullName
+            await API.put(`/contacts/${id}`, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
             });
+            alert("Contact Updated Successfully");
         } else {
-            await API.post("/contacts", {
-                ...formdata,
-                name: fullName
+            await API.post("/contacts", data, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
             });
+            alert("Contact Added Successfully");
         }
         navigate("/");
     } catch (error) {
@@ -84,18 +97,23 @@ async function handleSubmit(e) {
 function openFilePicker() {
     fileInputRef.current.click();
 }
-async function loadContact(){
-    try{
+async function loadContact() {
+    try {
         const response = await API.get(`/contacts/${id}`);
         setFormdata(response.data);
-    }
-    catch(error){
+        if (response.data.profileImage) {
+            setProfileImage(
+                `https://contactmanagerbackend-jism.onrender.com${response.data.profileImage}`
+            );
+            }
+    } catch (error) {
         console.log(error);
     }
 }
 function handleImageChange(e) {
     const file = e.target.files[0];
     if (file) {
+        setImageFile(file);
         setProfileImage(URL.createObjectURL(file));
     }
 }

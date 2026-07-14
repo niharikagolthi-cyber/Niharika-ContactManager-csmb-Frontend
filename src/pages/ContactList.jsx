@@ -47,7 +47,7 @@ function ContactList() {
                 </button>
             </div>
             <div className="search-wrapper">
-                <faSearch className="search-icon"/>
+                <FaSearch className="search-icon"/>
                 <input
                     type="text"
                     placeholder="Search Contact..."
@@ -65,7 +65,14 @@ function ContactList() {
                     <div className="contact-card" key={contact._id}>
                         <div className="contact-top">
                             <div className="avatar">
-                                {contact.name.charAt(0).toUpperCase()}
+                                {contact.profileImage ? (
+                                    <img
+                                        src={`https://contactmanagerbackend-jism.onrender.com${contact.profileImage}`}
+                                        alt={contact.name}
+                                        className="avatar-image"/>
+                                ) : (
+                                    contact.name.charAt(0).toUpperCase()
+                                )}
                             </div>
                             <div className="contact-info">
                                 <h3>{contact.name}</h3>
